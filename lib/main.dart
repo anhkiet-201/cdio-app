@@ -71,7 +71,7 @@ extension on _AppState {
           _selectedTab = value;
         });
         if ((_selectedTab > 0) && (Shared.user == null)) {
-          presentController.showPresent(
+          present(
               view: Container(
                 color: Colors.white,
                 child: const LoginView(),
@@ -86,7 +86,7 @@ extension on _AppState {
           );
         } else {
           if (value == 2) {
-            presentController.showPresent(
+            present(
                 view: Container(
                   color: Colors.white,
                   child: ListView.builder(

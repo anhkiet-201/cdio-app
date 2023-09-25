@@ -1,33 +1,19 @@
-import 'package:cdio/network/model/ErrorResponseModel.dart';
-import 'package:cdio/network/services/AuthService.dart';
-import 'package:cdio/scene/forget_password/ForgetPassword.dart';
-import 'package:cdio/scene/register/RegisterView.dart';
-import 'package:cdio/utils/LocalStorageService.dart';
-import 'package:cdio/utils/present.dart';
-import 'package:cdio/utils/shared/Shared.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
 import '../../component/CustomButton.dart';
 import '../../component/EmailField.dart';
-import '../../component/PasswordField.dart';
-import '../../network/model/UserModel.dart';
-part './ViewModel.dart';
+part '_ViewModel.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class ForgetPasswordView extends StatelessWidget {
+  const ForgetPasswordView({super.key});
 
-  @override
-  State<LoginView> createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => _ViewModel(),
-        child: const _View(),
+      child: const _View(),
     );
   }
 }
@@ -52,8 +38,8 @@ class __ViewState extends State<_View> {
       color: Colors.white,
       padding: const EdgeInsets.only(top: 20),
       child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: _viewModel.isLoading ? _loading() : _content()
+          physics: const BouncingScrollPhysics(),
+          child: _viewModel.isLoading ? _loading() : _content()
       ),
     );
   }
@@ -94,47 +80,11 @@ extension on __ViewState {
         EmailField(
           controller: _emailController,
         ),
-        PasswordField(
-          controller: _passController,
-        ),
-        const SizedBox(
-          height: 30,
-        ),
         CustomButton(
-          text: "Login",
+          text: "OK",
           onClick: () {
-            _viewModel.login(email: _emailController.text, password: _passController.text);
+           // _viewModel.login(email: _emailController.text, password: _passController.text);
           },
-        ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: TextButton(onPressed: (){
-            present(view: const ForgetPasswordView());
-          }, child: const Text("Forget password?")),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Not a member?'),
-            TextButton(
-                onPressed: (){
-                  present(
-                    view: RegisterView()
-                  );
-                },
-                child: const Text(
-                  'Signup now.',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black
-                  ),
-                )
-            )
-          ],
         ),
         const SizedBox(
           height: 30,
@@ -157,7 +107,7 @@ extension on __ViewState {
           ),
           SizedBox(height: 20,),
           Text(
-            'Đang đăng nhập!'
+              'Đang đăng nhập!'
           )
         ],
       ),
