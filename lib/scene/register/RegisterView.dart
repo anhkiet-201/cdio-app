@@ -1,3 +1,4 @@
+import 'package:cdio/utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../../component/CustomButton.dart';
@@ -80,7 +81,7 @@ class RegisterView extends StatelessWidget {
                 CustomButton(
                   text: "Signup",
                   onClick: () {
-
+                    context.showCustomSnackBar('sdads');
                   },
                 ),
                 const SizedBox(height: 30,)

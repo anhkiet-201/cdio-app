@@ -1,3 +1,5 @@
+import 'package:cdio/scene/forget_password/InputResetPin.dart';
+import 'package:cdio/utils/present.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
@@ -84,6 +86,7 @@ extension on __ViewState {
           text: "OK",
           onClick: () {
            // _viewModel.login(email: _emailController.text, password: _passController.text);
+            present(view: InputPinCode());
           },
         ),
         const SizedBox(

@@ -41,6 +41,7 @@ class __ViewState extends State<_View> {
           expandedHeight: 270,
           surfaceTintColor: Colors.transparent,
           backgroundColor: Colors.white,
+          elevation: 0,
           flexibleSpace: FlexibleSpaceBar(
             background: Padding(
               padding: const EdgeInsets.only(top: 20),

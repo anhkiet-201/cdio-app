@@ -25,6 +25,7 @@ class LocalStorageService {
     final result = await _securityStorage.get(key: key.value);
     if(result == null) return null;
     final json = jsonDecode(result);
+    if((json as Map<String, dynamic>).isEmpty) return null;
     final object = type().fromJsonStorage(json) as T;
     return object;
   }
