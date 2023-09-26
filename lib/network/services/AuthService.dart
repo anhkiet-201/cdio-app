@@ -16,4 +16,16 @@ class AuthService {
       );
      return AuthResponse.fromJson(response.data);
   }
+
+  Future<AuthResponse> register({required String email, required String password}) async {
+    final response = await _api.post(
+        path: '/register',
+        body: {
+          "email": email,
+          "password": password
+        }
+    );
+    return AuthResponse.fromJson(response.data);
+  }
+
 }
