@@ -5,6 +5,7 @@ import 'package:cdio/scene/register/RegisterView.dart';
 import 'package:cdio/utils/LocalStorageService.dart';
 import 'package:cdio/utils/present.dart';
 import 'package:cdio/utils/shared/Shared.dart';
+import 'package:cdio/utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => _ViewModel(),
+        create: (_) => _ViewModel(context),
         child: const _View(),
     );
   }

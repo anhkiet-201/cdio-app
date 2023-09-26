@@ -62,7 +62,7 @@ extension CDIOSnackBar on BuildContext {
   
   showSnackBar(SnackBarType type) => _showSnackBar(type);
 
-  showCustomSnackBar(String message) => _showSnackBar(SnackBarType.custom, customMessage: message);
+  showCustomSnackBar(String? message) => _showSnackBar(SnackBarType.custom, customMessage: message ?? '');
   
 }
 
