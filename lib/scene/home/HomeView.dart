@@ -1,13 +1,14 @@
+import 'package:cdio/component/CustomImage.dart';
 import 'package:cdio/network/model/HouseReponse.dart';
 import 'package:cdio/network/model/NewsResponseModel.dart';
 import 'package:cdio/network/model/ProjectRresponseModel.dart';
 import 'package:cdio/network/services/HomeService.dart';
 import 'package:cdio/scene/house_detail/HouseDetail.dart';
+import 'package:cdio/widget/scrollview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-
+import 'package:skeletons/skeletons.dart';
 part './ViewModel.dart';
 
 class HomeView extends StatelessWidget {
@@ -35,27 +36,27 @@ class __ViewState extends State<_View> {
   @override
   Widget build(BuildContext context) {
     _viewModel = Provider.of<_ViewModel>(context);
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        SliverAppBar(
-          expandedHeight: 270,
-          surfaceTintColor: Colors.transparent,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: banner(),
+    return BaseScrollView.sliver(
+        padding: EdgeInsets.zero,
+        onRefresh: _viewModel.fetch,
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 270,
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: Colors.white,
+            elevation: 0,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: banner(),
+              ),
+              collapseMode: CollapseMode.pin,
             ),
-            collapseMode: CollapseMode.pin,
+            floating: true,
           ),
-          floating: true,
-        ),
-        _searchBar(context),
-        _content()
-      ],
-    );
+          _searchBar(context),
+        ],
+        body: _content());
   }
 }
 
@@ -64,19 +65,17 @@ extension on __ViewState {
         height: 20,
       );
 
-  SliverToBoxAdapter _content() {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          children: [
-            homeNewest(),
-            spacer(),
-            projectNewest(),
-            spacer(),
-            projectNewest()
-          ],
-        ),
+  Widget _content() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        children: [
+          homeNewest(),
+          spacer(),
+          projectNewest(),
+          spacer(),
+          projectNewest()
+        ],
       ),
     );
   }
@@ -151,22 +150,37 @@ extension on __ViewState {
             height: 10,
           ),
           SizedBox(
-            height: 200,
-            child: Skeletonizer(
-              enabled: _viewModel.isLoading,
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
+              height: 200,
+              child: BaseScrollView.horizontal(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                scrollDirection: Axis.horizontal,
-                itemCount: _viewModel.isLoading
-                    ? _calculatedItemLoadingNum(275)
-                    : _viewModel.houses.length,
+                isLoading: _viewModel.isLoading,
+                itemCount: _viewModel.houses.length,
+                spacing: 10,
                 itemBuilder: (_, index) {
                   return _homeListViewItem(index);
                 },
-              ),
-            ),
-          )
+                loadingBuilder: (_, __) {
+                  return SizedBox(
+                    width: 275,
+                    child: Column(
+                      children: [
+                        SkeletonAvatar(
+                          style: SkeletonAvatarStyle(
+                              width: 260,
+                              height: 100,
+                              borderRadius: BorderRadius.circular(15)),
+                        ),
+                        SkeletonParagraph(
+                          style: const SkeletonParagraphStyle(
+                              lineStyle: SkeletonLineStyle(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)))),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ))
         ],
       ),
     );
@@ -184,18 +198,15 @@ extension on __ViewState {
           ),
           SizedBox(
             height: 300,
-            child: Skeletonizer(
-              enabled: _viewModel.isLoading,
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                scrollDirection: Axis.horizontal,
-                itemCount: _viewModel.isLoading
-                    ? _calculatedItemLoadingNum(275)
-                    : _viewModel.projects.length,
-                itemBuilder: (_, index) {
-                  return _projectListItem(index);
-                },
-              ),
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              scrollDirection: Axis.horizontal,
+              itemCount: _viewModel.isLoading
+                  ? _calculatedItemLoadingNum(275)
+                  : _viewModel.projects.length,
+              itemBuilder: (_, index) {
+                return _projectListItem(index);
+              },
             ),
           )
         ],
@@ -205,33 +216,19 @@ extension on __ViewState {
 
   Widget _homeListViewItem(int index) {
     final HouseResponse house;
-    if (!_viewModel.isLoading) {
-      house = _viewModel.houses[index];
-    } else {
-      house = HouseResponse(
-          displayName: 'cdio cdio cdio cdio cdio',
-          description: 'cdio cdio cdio cdio cdio',
-          info: Info(
-              thumbNailUrl:
-                  'https://danhkhoireal.vn/wp-content/uploads/2020/05/C%C3%B4ng-ty-C%E1%BB%95-ph%E1%BA%A7n-Kinh-doanh-B%E1%BA%A5t-%C4%91%E1%BB%99ng-s%E1%BA%A3n-S-Vin-Vi%E1%BB%87t-Nam.jpg'),
-          address: Address(
-              street: 'cdio cdio cdio cdio',
-              wards: 'cdio cdio cdio cdio',
-              district: 'cdio',
-              province: 'cdio'));
-    }
+    house = _viewModel.houses[index];
     return GestureDetector(
-      onTap: () => Navigator.maybeOf(context)?.push(MaterialPageRoute(builder: (_) => HouseDetail(house))),
-      child: Container(
-        margin: EdgeInsets.only(right: index < 9 ? 10 : 0),
+      onTap: () => Navigator.maybeOf(context)
+          ?.push(MaterialPageRoute(builder: (_) => HouseDetail(house))),
+      child: SizedBox(
         width: 275,
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(25)),
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              Image.network(
-                house.info?.thumbNailUrl ?? '',
+              CDImage(
+                url: house.info?.thumbNailUrl ?? '',
                 fit: BoxFit.cover,
                 height: 200,
                 width: 275,
@@ -252,13 +249,14 @@ extension on __ViewState {
                     ),
                     Text(
                       house.description ?? '',
-                      style: const TextStyle(color: Colors.black87, fontSize: 10),
+                      style:
+                          const TextStyle(color: Colors.black87, fontSize: 10),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Container(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 2),
                       child: Text(
                         '# ${house.address?.toString()}',
                         style: const TextStyle(

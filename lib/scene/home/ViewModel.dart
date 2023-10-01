@@ -7,7 +7,7 @@ class _ViewModel with ChangeNotifier {
 
   final _service = HomeService.shared;
 
-  var _isLoading = true;
+  var _isLoading = false;
   set isLoading(bool value) {
     _isLoading = value;
     notifyListeners();
@@ -26,7 +26,8 @@ class _ViewModel with ChangeNotifier {
   var projects = <ProjectResponse>[];
   var news = <NewsResponse>[];
 
-  void fetch() async {
+  Future<void> fetch() async {
+    isLoading = true;
      _service.fetchData()
         .then((value) {
           houses = value.houseNewest ?? [];

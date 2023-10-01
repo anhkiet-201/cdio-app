@@ -1,5 +1,7 @@
 import 'package:cdio/network/model/HouseReponse.dart';
+import 'package:cdio/widget/scrollview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:iconsax/iconsax.dart';
 
 class HouseDetail extends StatefulWidget {
@@ -15,30 +17,32 @@ class _HouseDetailState extends State<HouseDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
+      body: BaseScrollView.sliver(
         slivers: [
-          SliverAppBar(
-            expandedHeight: 275,
-            iconTheme: const IconThemeData(
-              color: Colors.white
-            ),
-            actions: [
-              IconButton(onPressed: (){}, icon: const Icon(Iconsax.heart),)
-            ],
-            flexibleSpace: FlexibleSpaceBar(
-              background: _houseImage(),
-              collapseMode: CollapseMode.parallax,
-            ),
+          SliverLayoutBuilder(
+            builder: (BuildContext contextSliver, SliverConstraints constraints) {
+              final isCollapsed = constraints.scrollOffset >= (275 - kToolbarHeight);
+              return SliverAppBar(
+                expandedHeight: 275,
+                iconTheme: IconThemeData(
+                    color: isCollapsed ? Colors.black : Colors.white
+                ),
+                stretch: true,
+                actions: [
+                  IconButton(onPressed: (){}, icon: const Icon(Iconsax.heart),)
+                ],
+                flexibleSpace: FlexibleSpaceBar(
+                  background: _houseImage(),
+                  collapseMode: CollapseMode.parallax,
+                ),
+              );
+            },
           ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                _infoBar()
-              ],
-            ),
-          )
+        ], body: Column(
+        children: [
+          _infoBar()
         ],
+      ),
       ),
       bottomNavigationBar: _contactBar(),
     );
