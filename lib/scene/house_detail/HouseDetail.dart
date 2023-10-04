@@ -2,6 +2,7 @@ import 'package:cdio/component/CustomImage.dart';
 import 'package:cdio/network/model/HouseReponse.dart';
 import 'package:cdio/scene/house_detail/components/house_images_view/house_images.view.dart';
 import 'package:cdio/scene/house_detail/components/same_project_view/same_project_view.dart';
+import 'package:cdio/utils/utils.dart';
 import 'package:cdio/widget/scrollview/scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -20,21 +21,27 @@ class _HouseDetailState extends State<HouseDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BaseScrollView.sliver(
-        slivers: [
-          HouseImagesView(widget.house.info?.houseImage)
-        ],
+        slivers: [HouseImagesView(widget.house.info?.houseImage)],
         body: Column(
           children: [
-            if(widget.house.info?.houseImage == null)
-              const SizedBox(height: 10,),
+            if (widget.house.info?.houseImage == null)
+              const SizedBox(
+                height: 10,
+              ),
             _infoBar(),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             _projectView(),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             SameProjectView(widget.house.houseId),
-            const SizedBox(height: 50,)
+            const SizedBox(
+              height: 50,
+            )
           ],
-      ),
+        ),
       ),
       bottomNavigationBar: _contactBar(),
     );
@@ -42,8 +49,9 @@ class _HouseDetailState extends State<HouseDetail> {
 }
 
 extension on _HouseDetailState {
-
-  Widget spacer() => const SizedBox(height: 20,);
+  Widget spacer() => const SizedBox(
+        height: 20,
+      );
 
   Widget _contactBar() {
     return Container(
@@ -53,13 +61,37 @@ extension on _HouseDetailState {
         children: [
           _avatar(),
           const Spacer(),
-          IconButton.outlined(onPressed: () {
-            showModalBottomSheet(
-                context: context,
-                builder: (_) => Container(height: 200,),
-            );
-          }, icon: const Icon(Iconsax.message)),
-          IconButton.outlined(onPressed: () {}, icon: const Icon(Iconsax.call))
+          IconButton.outlined(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (_) => _contactSheet(),
+                  showDragHandle: true
+                );
+              },
+              icon: const Icon(Iconsax.message)),
+          if(widget.house.account?.phoneNumber != null)
+            IconButton.outlined(onPressed: () {}, icon: const Icon(Iconsax.call))
+        ],
+      ),
+    );
+  }
+
+  Widget _contactSheet() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 20),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextButton(
+            onPressed: () {},
+            child: Text('Gửi tin qua email: ${widget.house.account?.email}'),
+          ),
+          if(widget.house.account?.phoneNumber != null)
+            TextButton(onPressed: () {}, child: Text('Gửi tin qua số điện thoại: ${widget.house.account?.phoneNumber}')
+            ),
         ],
       ),
     );
@@ -73,18 +105,19 @@ extension on _HouseDetailState {
         ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(25)),
           child: Image.network(
-            user?.avatarUrl ?? 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80',
+            user?.avatarUrl ??
+                'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80',
             height: 50,
             width: 50,
             fit: BoxFit.cover,
           ),
         ),
-        const SizedBox(width: 10,),
+        const SizedBox(
+          width: 10,
+        ),
         Text(
           user?.fullName ?? 'User name',
-          style: const TextStyle(
-            fontWeight: FontWeight.w600
-          ),
+          style: const TextStyle(fontWeight: FontWeight.w600),
         )
       ],
     );
@@ -103,7 +136,7 @@ extension on _HouseDetailState {
             children: [
               const Spacer(),
               Text(
-                '${DateTime.fromMillisecondsSinceEpoch(house.createTime ?? 0).toLocal()}',
+                timeAgo(house.createTime),
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
               )
             ],
@@ -121,11 +154,7 @@ extension on _HouseDetailState {
           spacer(),
           Text(
             house.description ?? '',
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16
-            ),
-
+            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
           )
         ],
       ),
@@ -138,10 +167,8 @@ extension on _HouseDetailState {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        for(final t in type)
-          Text(
-            'Giá ${t.typeName! == 'Rent' ? 'thuê' : 'bán'}: ${t.price} vnđ'
-          )
+        for (final t in type)
+          Text('Giá ${t.typeName! == 'Rent' ? 'thuê' : 'bán'}: ${t.price} vnđ')
       ],
     );
   }
@@ -149,8 +176,7 @@ extension on _HouseDetailState {
   Widget _address() {
     final address = widget.house.address;
     return Text(
-      '${address?.street}, ${address?.wards}, ${address?.district}, ${address?.province}'
-    );
+        '${address?.street}, ${address?.wards}, ${address?.district}, ${address?.province}');
   }
 
   Widget _options() {
@@ -170,7 +196,7 @@ extension on _HouseDetailState {
       ),
     );
   }
-  
+
   Widget _projectView() {
     final project = widget.house.project;
     return Visibility(
@@ -184,7 +210,7 @@ extension on _HouseDetailState {
               'Thuộc dự án:',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
-            if(project?.projectThumbNailUrl != null)
+            if (project?.projectThumbNailUrl != null)
               AspectRatio(
                 aspectRatio: 1,
                 child: CDImage(
@@ -192,32 +218,26 @@ extension on _HouseDetailState {
                   background: Colors.grey.withOpacity(0.5),
                 ),
               ),
-            const SizedBox(height: 5,),
+            const SizedBox(
+              height: 5,
+            ),
             Text(
               '${project?.projectName}',
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600
-              ),
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
             Text(
               '${project?.projectStatus}',
-              style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600
-              ),
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
-            if(project?.projectDescription != null)
+            if (project?.projectDescription != null)
               Text(
                 '${project?.projectDescription}',
               ),
-            if(project?.contactInfo != null)
+            if (project?.contactInfo != null)
               Text(
                 '${project?.contactInfo}',
-                style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600
-                ),
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
               )
           ],
         ),
@@ -232,13 +252,10 @@ extension on _HouseDetailState {
         margin: const EdgeInsets.symmetric(horizontal: 5),
         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.3),
-          borderRadius: const BorderRadius.all(Radius.circular(20))
-        ),
+            color: Colors.grey.withOpacity(0.3),
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
         child: Center(
-          child: Text(
-            '$label: $numOf'
-          ),
+          child: Text('$label: $numOf'),
         ),
       ),
     );

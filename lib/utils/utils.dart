@@ -1,7 +1,5 @@
-import 'dart:math';
-
-import 'package:cdio/utils/shared/Shared.dart';
 import 'package:flutter/services.dart';
+import 'package:jiffy/jiffy.dart';
 
 bool isValidEmail(String email) {
   return RegExp(
@@ -11,4 +9,9 @@ bool isValidEmail(String email) {
 
 void copyToClipboard(String data) async {
   await Clipboard.setData(ClipboardData(text: data));
+}
+
+String timeAgo(int? time) {
+  return Jiffy.parseFromDateTime(DateTime.fromMillisecondsSinceEpoch(time ?? 0)).toLocal()
+      .fromNow();
 }
