@@ -1,7 +1,9 @@
+import 'package:cdio/component/CustomImage.dart';
 import 'package:cdio/network/model/HouseReponse.dart';
-import 'package:cdio/widget/scrollview.dart';
+import 'package:cdio/scene/house_detail/components/house_images_view/house_images.view.dart';
+import 'package:cdio/scene/house_detail/components/same_project_view/same_project_view.dart';
+import 'package:cdio/widget/scrollview/scrollview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:iconsax/iconsax.dart';
 
 class HouseDetail extends StatefulWidget {
@@ -19,29 +21,19 @@ class _HouseDetailState extends State<HouseDetail> {
     return Scaffold(
       body: BaseScrollView.sliver(
         slivers: [
-          SliverLayoutBuilder(
-            builder: (BuildContext contextSliver, SliverConstraints constraints) {
-              final isCollapsed = constraints.scrollOffset >= (275 - kToolbarHeight);
-              return SliverAppBar(
-                expandedHeight: 275,
-                iconTheme: IconThemeData(
-                    color: isCollapsed ? Colors.black : Colors.white
-                ),
-                stretch: true,
-                actions: [
-                  IconButton(onPressed: (){}, icon: const Icon(Iconsax.heart),)
-                ],
-                flexibleSpace: FlexibleSpaceBar(
-                  background: _houseImage(),
-                  collapseMode: CollapseMode.parallax,
-                ),
-              );
-            },
-          ),
-        ], body: Column(
-        children: [
-          _infoBar()
+          HouseImagesView(widget.house.info?.houseImage)
         ],
+        body: Column(
+          children: [
+            if(widget.house.info?.houseImage == null)
+              const SizedBox(height: 10,),
+            _infoBar(),
+            const SizedBox(height: 10,),
+            _projectView(),
+            const SizedBox(height: 10,),
+            SameProjectView(widget.house.houseId),
+            const SizedBox(height: 50,)
+          ],
       ),
       ),
       bottomNavigationBar: _contactBar(),
@@ -63,7 +55,6 @@ extension on _HouseDetailState {
           const Spacer(),
           IconButton.outlined(onPressed: () {
             showModalBottomSheet(
-
                 context: context,
                 builder: (_) => Container(height: 200,),
             );
@@ -96,25 +87,6 @@ extension on _HouseDetailState {
           ),
         )
       ],
-    );
-  }
-
-  Widget _houseImage() {
-    final houseImages = widget.house.info?.houseImage ?? [];
-    return Visibility(
-      visible: houseImages.isNotEmpty,
-      child: SizedBox(
-        height: 275,
-        child: PageView.builder(
-          itemCount: houseImages.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Image.network(
-              houseImages[index].imageUrl ?? '',
-              fit: BoxFit.cover,
-            );
-          },
-        ),
-      ),
     );
   }
 
@@ -195,6 +167,60 @@ extension on _HouseDetailState {
           _optionItem(label: 'Phòng bếp', numOf: info?.numKitchen),
           _optionItem(label: 'Toilet', numOf: info?.numToilet),
         ],
+      ),
+    );
+  }
+  
+  Widget _projectView() {
+    final project = widget.house.project;
+    return Visibility(
+      visible: project != null,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'Thuộc dự án:',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            if(project?.projectThumbNailUrl != null)
+              AspectRatio(
+                aspectRatio: 1,
+                child: CDImage(
+                  url: project?.projectThumbNailUrl,
+                  background: Colors.grey.withOpacity(0.5),
+                ),
+              ),
+            const SizedBox(height: 5,),
+            Text(
+              '${project?.projectName}',
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600
+              ),
+            ),
+            Text(
+              '${project?.projectStatus}',
+              style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600
+              ),
+            ),
+            if(project?.projectDescription != null)
+              Text(
+                '${project?.projectDescription}',
+              ),
+            if(project?.contactInfo != null)
+              Text(
+                '${project?.contactInfo}',
+                style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600
+                ),
+              )
+          ],
+        ),
       ),
     );
   }

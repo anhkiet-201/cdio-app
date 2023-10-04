@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cdio/utils/shared/Shared.dart';
 import 'package:flutter/services.dart';
 
 bool isValidEmail(String email) {

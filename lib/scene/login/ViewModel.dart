@@ -8,13 +8,6 @@ class _ViewModel with ChangeNotifier {
   final _localStorage = LocalStorageService.shared;
   var _isLoading = false;
   var _isError = false;
-  User? _user;
-
-  set user(User? user) {
-    Shared.user = _user = user;
-    notifyListeners();
-  }
-  User? get user => _user;
 
   set isLoading(bool isLoading) {
     _isLoading = isLoading;
@@ -36,13 +29,13 @@ class _ViewModel with ChangeNotifier {
           context.showCustomSnackBar(value.message);
           return;
         }
-        user = value.user;
+        context.appState.user = value.user;
         await Future.wait([
           _localStorage.saveValue(key: LocalStorageKey.jwtKey, value: value.token),
-          _localStorage.saveObject(key: LocalStorageKey.user, object: user)
+          _localStorage.saveObject(key: LocalStorageKey.user, object: context.appState.user)
         ]).then((value) {
-          context.showCustomSnackBar('Đã đăng nhập với ${user?.email ?? ''}');
-          presentController.hidePresent();
+          context.showCustomSnackBar('Đã đăng nhập với ${context.appState.user?.email ?? ''}');
+          dismiss();
         });
       })
       .onError((ErrorResponse error, stackTrace) {

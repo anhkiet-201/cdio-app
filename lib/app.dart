@@ -1,83 +1,52 @@
-import 'package:cdio/scene/home/HomeView.dart';
-import 'package:cdio/scene/login/LoginView.dart';
-import 'package:cdio/utils/present.dart';
-import 'package:cdio/utils/shared/Shared.dart';
+import 'package:cdio/scene/NavView.dart';
+import 'package:cdio/widget/present/present_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 
-class App extends StatefulWidget {
-  const App({super.key});
+import 'network/model/UserModel.dart';
 
-  @override
-  State<App> createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  var _selectedTab = 0;
-  var _previousSelected = 0;
-
+class AppDelegate extends StatelessWidget {
+  const AppDelegate(this.app, {super.key});
+  final App app;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: const HomeView(),
-      bottomNavigationBar: bottomNavigation(),
+    return MaterialApp(
+      title: 'CDIO App',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
+        useMaterial3: true,
+      ),
+      home: ChangeNotifierProvider.value(
+        value: app,
+        child: PresentWidget(
+            controller: App.presentController,
+            dismissDragLeftDrawer: true,
+            dismissDragRightDrawer: true,
+            child: const NavView()
+        ),
+      ),
     );
   }
 }
 
-extension on _AppState {
-  Widget bottomNavigation() {
-    return BottomNavigationBar(
-      selectedItemColor: Colors.black,
-      unselectedItemColor: Colors.grey.withOpacity(0.8),
-      currentIndex: _selectedTab,
-      onTap: (value) {
-        _previousSelected = _selectedTab;
-        setState(() {
-          _selectedTab = value;
-        });
-        if ((_selectedTab > 0) && (Shared.user == null)) {
-          present(
-              view: Container(
-                color: Colors.white,
-                child: const LoginView(),
-              ),
-              onPresentHide: () {
-                if (Shared.user == null) {
-                  setState(() {
-                    _selectedTab = _previousSelected;
-                  });
-                }
-              }
-          );
-        } else {
-          if (value == 2) {
-            present(
-                view: Container(
-                  color: Colors.white,
-                  child: ListView.builder(
-                      primary: true,
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (_, index) => Container(
-                        height: 100,
-                        color: Colors.red,
-                        child: Text('$index'),
-                      )),
-                ),
-                onPresentHide: () {
-                  setState(() {
-                    _selectedTab = _previousSelected;
-                  });
-                });
-          }
-        }
-      },
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Iconsax.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Iconsax.heart), label: 'Favorite'),
-        BottomNavigationBarItem(icon: Icon(Iconsax.edit), label: 'Post'),
-        BottomNavigationBarItem(icon: Icon(Iconsax.profile_2user), label: 'Profile')
-      ],
-    );
+class App with ChangeNotifier {
+  /// Constructor
+  App(User? initUser) {
+    _user = initUser;
+  }
+  /// Share Properties
+  static final presentController = PresentController();
+
+  /// Share Properties
+
+  /// Global state
+  User? _user;
+
+  User? get user => _user;
+
+  set user(User? value) {
+    _user = value;
+    notifyListeners();
   }
 }
