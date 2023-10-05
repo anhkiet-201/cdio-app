@@ -8,5 +8,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   var user = await LocalStorageService.shared
       .getObject(key: LocalStorageKey.user, type: User.new);
+  await LocalStorageService.initJwt();
   runApp(AppDelegate(App(user)));
 }
