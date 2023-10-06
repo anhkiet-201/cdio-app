@@ -1,3 +1,5 @@
+import 'package:cdio/component/CustomButton.dart';
+import 'package:cdio/component/PasswordField.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:pinput/pinput.dart';
@@ -14,12 +16,13 @@ class InputPinCode extends StatefulWidget {
 class _InputPinCodeState extends State<InputPinCode> {
 
   final pinController = TextEditingController();
+  final _passController = TextEditingController();
   final focusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
 
-  final focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
-  final fillColor = Color.fromRGBO(243, 246, 249, 0);
-  final borderColor = Color.fromRGBO(23, 171, 144, 0.4);
+  final focusedBorderColor = const Color.fromRGBO(23, 171, 144, 1);
+  final fillColor = const Color.fromRGBO(243, 246, 249, 0);
+  final borderColor = const Color.fromRGBO(23, 171, 144, 0.4);
 
   @override
   void dispose() {
@@ -65,7 +68,7 @@ extension on _InputPinCodeState {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Welcome,',
+                  'Cập nhật mật khẩu',
                   style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold),
@@ -73,7 +76,7 @@ extension on _InputPinCodeState {
                   maxLines: 1,
                 ),
                 Text(
-                  'Sign in to continue,',
+                  'Nhập mã pin',
                   style: TextStyle(
                     fontSize: 35,
                   ),
@@ -151,15 +154,15 @@ extension on _InputPinCodeState {
               ],
             ),
           ),
-          // EmailField(
-          //   controller: _emailController,
-          // ),
-          // CustomButton(
-          //   text: "OK",
-          //   onClick: () {
-          //     // _viewModel.login(email: _emailController.text, password: _passController.text);
-          //   },
-          // ),
+          PasswordField(
+            controller: _passController,
+          ),
+          CustomButton(
+            text: "OK",
+            onClick: () {
+              // _viewModel.login(email: _emailController.text, password: _passController.text);
+            },
+          ),
           const SizedBox(
             height: 30,
           ),

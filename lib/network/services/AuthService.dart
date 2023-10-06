@@ -1,4 +1,5 @@
 import 'package:cdio/network/model/AuthResponseModel.dart';
+import 'package:cdio/network/model/ResetPasswordResponseModel.dart';
 
 import '../api/BaseApi.dart';
 
@@ -27,6 +28,14 @@ class AuthService {
         }
     );
     return AuthResponse.fromJson(response.data);
+  }
+
+  Future<ResetPasswordResponseModel> getTokenResetPassword({required String email}) async {
+    final response = await _api.post(
+        path: '/getResetPasswordToken',
+        rawBody: 'igg.anhkiet1@gmail.com'
+    );
+    return ResetPasswordResponseModel.fromJson(response.data);
   }
 
 }

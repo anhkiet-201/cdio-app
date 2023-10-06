@@ -32,13 +32,13 @@ class BaseApi {
     return BaseResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   }
 
-  Future<BaseResponse> post({required String path, Object? body}) async {
+  Future<BaseResponse> post({required String path, Object? body, Object? rawBody}) async {
     final jwt = LocalStorageService.jwt;
     if (jwt != null) {
       _headers.addEntries([MapEntry('Authorization', jwt)]);
     }
     final response = await http.post(Uri.parse('$_baseUrl$path'),
-        body: body != null ? jsonEncode(body) : body, headers: _headers);
+        body: rawBody ?? (body != null ? jsonEncode(body) : body), headers: _headers);
     if (response.statusCode >= 400) {
       throw (ErrorResponse.fromJson(_utf8JsonDecode(response.bodyBytes))
               .error ??
