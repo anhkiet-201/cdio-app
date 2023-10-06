@@ -82,7 +82,7 @@ extension on __ViewState {
               onClick: () {
                 _viewModel.reset(_emailController.text.trim()).then((_) {
                   if (_viewModel.status) {
-                    present(view: const InputPinCode());
+                    present(view: InputResetPin(_emailController.text.trim()));
                   }
                 });
               },

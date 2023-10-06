@@ -38,4 +38,16 @@ class AuthService {
     return ResetPasswordResponseModel.fromJson(response.data);
   }
 
+  Future<AuthResponse> setNewPassword({required String email, required String password, required String token}) async {
+    final response = await _api.post(
+        path: '/setNewPassword',
+        body: {
+          "email": email,
+          "password": password,
+          "token": token
+        }
+    );
+    return AuthResponse.fromJson(response.data);
+  }
+
 }

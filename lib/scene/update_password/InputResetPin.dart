@@ -1,20 +1,38 @@
 import 'package:cdio/component/CustomButton.dart';
 import 'package:cdio/component/PasswordField.dart';
+import 'package:cdio/network/model/ErrorResponseModel.dart';
+import 'package:cdio/network/services/AuthService.dart';
+import 'package:cdio/utils/LocalStorageService.dart';
+import 'package:cdio/utils/extensions/context.dart';
+import 'package:cdio/utils/present.dart';
+import 'package:cdio/utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
+part 'ViewModel.dart';
 
-import '../../component/EmailField.dart';
-
-class InputPinCode extends StatefulWidget {
-  const InputPinCode({super.key});
-
+class InputResetPin extends StatelessWidget {
+  const InputResetPin(this.email, {super.key});
+  final String email;
   @override
-  State<InputPinCode> createState() => _InputPinCodeState();
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider.value(
+      value: _ViewModel(context, email),
+      child: const _View(),
+    );
+  }
 }
 
-class _InputPinCodeState extends State<InputPinCode> {
+class _View extends StatefulWidget {
+  const _View({super.key});
 
+  @override
+  State<_View> createState() => _ViewState();
+}
+
+class _ViewState extends State<_View> {
+  late _ViewModel _viewModel;
   final pinController = TextEditingController();
   final _passController = TextEditingController();
   final focusNode = FocusNode();
@@ -33,18 +51,19 @@ class _InputPinCodeState extends State<InputPinCode> {
 
   @override
   Widget build(BuildContext context) {
+    _viewModel = Provider.of<_ViewModel>(context);
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.only(top: 20),
       child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: _content()
+          child: _viewModel.isLoading ? _loading() : _content()
       ),
     );
   }
 }
 
-extension on _InputPinCodeState {
+extension on _ViewState {
   Widget _content() {
     final defaultPinTheme = PinTheme(
       width: 56,
@@ -106,21 +125,16 @@ extension on _InputPinCodeState {
                     listenForMultipleSmsOnAndroid: true,
                     defaultPinTheme: defaultPinTheme,
                     separatorBuilder: (index) => const SizedBox(width: 8),
-                    validator: (value) {
-                      return value == '2222222' ? null : 'Pin is incorrect';
-                    },
+                    // validator: (value) {
+                    //   return value == '2222222' ? null : 'Pin is incorrect';
+                    // },
                     // onClipboardFound: (value) {
                     //   debugPrint('onClipboardFound: $value');
                     //   pinController.setText(value);
                     // },
                     hapticFeedbackType: HapticFeedbackType.lightImpact,
                     onCompleted: (pin) {
-                      if(formKey.currentState?.validate() ?? false) {
-                        debugPrint("addadasda");
-                      }
-                    },
-                    onChanged: (value) {
-                      debugPrint('onChanged: $value');
+
                     },
                     cursor: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -154,13 +168,15 @@ extension on _InputPinCodeState {
               ],
             ),
           ),
+          const SizedBox(height: 50,),
           PasswordField(
             controller: _passController,
           ),
           CustomButton(
             text: "OK",
             onClick: () {
-              // _viewModel.login(email: _emailController.text, password: _passController.text);
+              print(pinController.text);
+              _viewModel.updatePassword(password: _passController.text.trim(), token: pinController.text.trim());
             },
           ),
           const SizedBox(
@@ -185,7 +201,7 @@ extension on _InputPinCodeState {
           ),
           SizedBox(height: 20,),
           Text(
-              'Đang đăng nhập!'
+              'Đang cập nhật mật khẩu!'
           )
         ],
       ),
