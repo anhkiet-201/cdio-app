@@ -5,7 +5,12 @@ import 'package:cdio/utils/security_storage.dart';
 
 class LocalStorageService {
   static final shared = LocalStorageService();
+  static String? jwt;
   final _securityStorage = SecurityStorage.shared;
+
+  static Future initJwt() async {
+    jwt = await shared.getValue(LocalStorageKey.jwtKey);
+  }
 
   Future<String?> getValue(LocalStorageKey key) async {
     final result = await _securityStorage.get(key: key.value);

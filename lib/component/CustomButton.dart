@@ -33,7 +33,8 @@ class CustomButton extends StatelessWidget {
                 child: Text(
                   text,
                   style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
+                      fontSize: 20, fontWeight: FontWeight.bold
+                  ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),

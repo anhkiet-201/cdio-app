@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:skeletons/skeletons.dart';
 
 
 class CDImage extends StatelessWidget {
@@ -14,41 +15,42 @@ class CDImage extends StatelessWidget {
       this.fit = BoxFit.cover,
       this.radius = 0,
       this.onError,
-      this.placeholder});
+      this.placeholder,
+      this.background = Colors.white});
 
-  final String url;
+  final String? url;
   final double? width;
   final double? height;
   final BoxFit fit;
   final double radius;
   final Function? onError;
   final Widget? placeholder;
+  final Color background;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(radius)),
       child: CachedNetworkImage(
-        imageUrl: url,
+        imageUrl: url ?? '',
         width: width,
         height: height,
         fit: fit,
-        // placeholder: (_, __) =>
-        //     placeholder ??
-        //     Skeletonizer(
-        //       enabled: false,
-        //       child: Container(
-        //         width: width,
-        //         height: height,
-        //         color: Colors.black,
-        //       ),
-        //     ),
+        placeholder: (_, __) =>
+            placeholder ??
+            SkeletonAvatar(
+              style: SkeletonAvatarStyle(
+                width: width,
+                height: height,
+                borderRadius: BorderRadius.circular(radius)
+              ),
+            ),
         errorListener: (_) => onError?.call(),
         errorWidget: (_, __, ___) => Container(
           constraints: const BoxConstraints(minWidth: 25, minHeight: 25),
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(15))),
+          decoration: BoxDecoration(
+              color: background,
+              borderRadius: const BorderRadius.all(Radius.circular(15))),
           child: Center(
               child: Icon(Iconsax.info_circle,
                   size: width == null || height == null

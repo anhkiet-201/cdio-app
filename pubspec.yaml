@@ -44,6 +44,8 @@ dependencies:
   intl: ^0.18.1
   cached_network_image: ^3.3.0
   skeletons: ^0.0.3
+  jiffy: ^6.2.1
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:
