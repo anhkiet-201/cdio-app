@@ -1,6 +1,8 @@
 import 'package:cdio/network/model/UserModel.dart';
+import 'package:cdio/utils/extensions/context.dart';
 import 'package:cdio/utils/present.dart';
 import 'package:cdio/utils/snack_bar.dart';
+import 'package:cdio/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
@@ -74,29 +76,29 @@ class _ViewState extends State<_View> {
             height: 50,
           ),
           CustomTextField(
-            hintText: 'Username',
+            hintText: 'Tên người dùng',
             prefixIcon: const Icon(Icons.person_2_outlined),
             controller: _usernameController,
           ),
-          CustomTextField(
-            hintText: 'Birthday',
-            prefixIcon: const Icon(Icons.date_range_outlined),
-            readOnly: true,
-            controller: _birthdayController,
-            onTap: () {
-              showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(1950),
-                  lastDate: DateTime.now())
-                  .then((value) {
-                if (value != null) {
-                  _birthdayController.text =
-                  '${value.month}/${value.day}/${value.year}';
-                }
-              });
-            },
-          ),
+          // CustomTextField(
+          //   hintText: 'Birthday',
+          //   prefixIcon: const Icon(Icons.date_range_outlined),
+          //   readOnly: true,
+          //   controller: _birthdayController,
+          //   onTap: () {
+          //     showDatePicker(
+          //         context: context,
+          //         initialDate: DateTime.now(),
+          //         firstDate: DateTime(1950),
+          //         lastDate: DateTime.now())
+          //         .then((value) {
+          //       if (value != null) {
+          //         _birthdayController.text =
+          //         '${value.month}/${value.day}/${value.year}';
+          //       }
+          //     });
+          //   },
+          // ),
           EmailField(
             controller: _emailController,
           ),
@@ -109,7 +111,7 @@ class _ViewState extends State<_View> {
           CustomButton(
             text: "Signup",
             onClick: () {
-              _viewModel.register(email: _emailController.text.trim(), password: _passController.text.trim());
+              _viewModel.register(email: _emailController.text.trim(), password: _passController.text.trim(), name: _usernameController.text.trim());
             },
           ),
           const SizedBox(height: 30,)

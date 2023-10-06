@@ -73,7 +73,7 @@ extension on __ViewState {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Welcome,',
+                'Xin chào,',
                 style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold),
@@ -81,7 +81,7 @@ extension on __ViewState {
                 maxLines: 1,
               ),
               Text(
-                'Sign in to continue,',
+                'Đăng nhập để tiếp tục,',
                 style: TextStyle(
                   fontSize: 35,
                 ),
@@ -104,7 +104,7 @@ extension on __ViewState {
           height: 30,
         ),
         CustomButton(
-          text: "Login",
+          text: "Đăng nhập",
           onClick: () {
             _viewModel.login(email: _emailController.text, password: _passController.text);
           },
@@ -113,7 +113,7 @@ extension on __ViewState {
           alignment: Alignment.centerRight,
           child: TextButton(onPressed: (){
             present(view: const ForgetPasswordView());
-          }, child: const Text("Forget password?")),
+          }, child: const Text("Quên mật khẩu?")),
         ),
         const SizedBox(
           height: 30,
@@ -122,15 +122,15 @@ extension on __ViewState {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Not a member?'),
+            const Text('Chưa có tài khoản?'),
             TextButton(
                 onPressed: (){
                   present(
-                    view: RegisterView()
+                    view: const RegisterView()
                   );
                 },
                 child: const Text(
-                  'Signup now.',
+                  'Đăng ký ngay.',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.black

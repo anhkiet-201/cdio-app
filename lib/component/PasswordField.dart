@@ -17,7 +17,7 @@ class _PasswordFieldState extends State<PasswordField> {
   Widget build(BuildContext context) {
     return CustomTextField(
         controller: widget.controller,
-        hintText: 'Password',
+        hintText: 'Mật khẩu',
         obscureText: !_isVisiable,
         prefixIcon: const Icon(Icons.password_outlined),
         suffixIcon: TextButton(

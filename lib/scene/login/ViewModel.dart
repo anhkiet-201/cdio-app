@@ -41,7 +41,8 @@ class _ViewModel with ChangeNotifier {
         await Future.wait([
           _localStorage.saveValue(key: LocalStorageKey.jwtKey, value: value.token),
           _localStorage.saveObject(key: LocalStorageKey.user, object: context.appState.user)
-        ]).then((value) {
+        ]).then((_) {
+          LocalStorageService.jwt = value.token;
           context.showCustomSnackBar('Đã đăng nhập với ${context.appState.user?.email ?? ''}');
           dismiss();
         });
