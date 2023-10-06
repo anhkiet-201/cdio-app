@@ -13,6 +13,10 @@ class SecurityStorage {
     return result;
   }
 
+  Future<void> drop({required String key}) async {
+    await _storage.delete(key: key, aOptions: _getAndroidOptions());
+  }
+
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
         encryptedSharedPreferences: true,
       );

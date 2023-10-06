@@ -1,6 +1,9 @@
 import 'package:cdio/component/CustomButton.dart';
 import 'package:cdio/component/CustomImage.dart';
+import 'package:cdio/network/model/UserModel.dart';
+import 'package:cdio/utils/LocalStorageService.dart';
 import 'package:cdio/utils/extensions/context.dart';
+import 'package:cdio/utils/snack_bar.dart';
 import 'package:cdio/widget/scrollview/scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +35,7 @@ class _ProfileViewState extends State<ProfileView> {
             _profile(),
             const SizedBox(height: 10,),
             CustomButton(text: 'Logout', onClick: () {
-              context.appState.user = null;
+              _logout();
             })
           ],
         ),
@@ -76,6 +79,21 @@ extension on _ProfileViewState {
         ],
       ),
     );
+  }
+}
+
+extension on _ProfileViewState {
+  _logout() async {
+    await Future.wait(
+      [
+        LocalStorageService.shared.dropValue(key: LocalStorageKey.jwtKey),
+        LocalStorageService.shared.dropValue(key: LocalStorageKey.user),
+      ]
+    ).then((value) async {
+      context.appState.user = null;
+      LocalStorageService.jwt = null;
+      context.showCustomSnackBar('Đã đăng xuất!');
+    });
   }
 }
 

@@ -34,6 +34,10 @@ class LocalStorageService {
     final object = type().fromJsonStorage(json) as T;
     return object;
   }
+
+  Future<void> dropValue({required LocalStorageKey key}) async {
+    await _securityStorage.drop(key: key.value);
+  }
 }
 
 enum LocalStorageKey{

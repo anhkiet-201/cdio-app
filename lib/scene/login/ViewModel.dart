@@ -22,6 +22,14 @@ class _ViewModel with ChangeNotifier {
   bool get isError => _isError;
 
   login({required String email, required String password}) async {
+    if(!isValidEmail(email)) {
+      context.showCustomSnackBar('Vui lòng nhập đúng định dạng email!');
+      return;
+    }
+    if(password.length < 8) {
+      context.showCustomSnackBar('Mật khẩu tối thiểu 8 ký tự');
+      return;
+    }
     isLoading = true;
     _authService.login(email: email, password: password)
       .then((value) async {
