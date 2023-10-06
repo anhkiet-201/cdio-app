@@ -4,6 +4,7 @@ import 'package:cdio/network/model/NewsResponseModel.dart';
 import 'package:cdio/network/model/ProjectRresponseModel.dart';
 import 'package:cdio/network/services/HomeService.dart';
 import 'package:cdio/scene/house_detail/HouseDetail.dart';
+import 'package:cdio/scene/search_result/SearchResult.dart';
 import 'package:cdio/widget/scrollview/scrollview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -109,6 +110,11 @@ extension on __ViewState {
                       hintText: 'Type something',
                       prefixIcon: Icon(Icons.search)),
                   textInputAction: TextInputAction.search,
+                  onFieldSubmitted: (value) {
+                    Navigator.maybeOf(context)?.push(
+                      MaterialPageRoute(builder: (_)=> SearchResult(keyword: value,))
+                    );
+                  },
                 ),
               )),
             ],

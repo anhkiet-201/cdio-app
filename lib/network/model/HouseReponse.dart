@@ -1,8 +1,9 @@
+import 'package:cdio/network/model/BaseData.dart';
 import 'package:cdio/network/model/UserModel.dart';
 
 import 'ProjectRresponseModel.dart';
 
-class HouseResponse {
+class HouseResponse extends BaseData {
   int? houseId;
   String? displayName;
   String? description;
@@ -63,6 +64,11 @@ class HouseResponse {
     data['isOwner'] = isOwner;
     data['isFavorite'] = isFavorite;
     return data;
+  }
+
+  @override
+  BaseData fromJsonBase(Map<String, dynamic> json) {
+    return HouseResponse.fromJson(json);
   }
 }
 

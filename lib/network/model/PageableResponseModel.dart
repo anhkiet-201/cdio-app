@@ -1,3 +1,5 @@
+import 'package:cdio/network/model/BaseData.dart';
+
 class PageableResponseModel {
   int? pageIndex;
   int? totalPages;
@@ -38,4 +40,33 @@ class PageableResponseModel {
     data['message'] = message;
     return data;
   }
+
+  Pageable<T> to<T extends BaseData>({required T Function() type}) {
+    return Pageable<T>(
+      pageIndex: pageIndex,
+      totalPages: totalPages,
+      hasNextPage: hasNextPage,
+      status: status,
+      message: message,
+      items: items?.map((e) => type().fromJsonBase(e) as T).toList()
+    );
+  }
+}
+
+class Pageable<T> {
+  int? pageIndex;
+  int? totalPages;
+  bool? hasNextPage;
+  List<T>? items;
+  bool? status;
+  String? message;
+
+  Pageable(
+      {this.pageIndex,
+        this.totalPages,
+        this.hasNextPage,
+        this.items,
+        this.status,
+        this.message});
+
 }
