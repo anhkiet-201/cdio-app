@@ -3,19 +3,42 @@ import 'package:cdio/network/model/UserModel.dart';
 
 import 'ProjectRresponseModel.dart';
 
-class HouseResponse extends BaseData {
+class HouseResponseModel {
+  bool? status;
+  House? house;
+  String? message;
+
+  HouseResponseModel({this.status, this.house, this.message});
+
+  HouseResponseModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    house = House.fromJson(json['house']);
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['house'] = house?.toJson();
+    data['message'] = message;
+    return data;
+  }
+}
+
+
+class House extends BaseData {
   int? houseId;
   String? displayName;
   String? description;
   Address? address;
   User? account;
-  ProjectResponse? project;
+  Project? project;
   Info? info;
   int? createTime;
   bool? isOwner;
   bool? isFavorite;
 
-  HouseResponse(
+  House(
       {this.houseId,
         this.displayName,
         this.description,
@@ -27,7 +50,7 @@ class HouseResponse extends BaseData {
         this.isOwner,
         this.isFavorite});
 
-  HouseResponse.fromJson(Map<String, dynamic> json) {
+  House.fromJson(Map<String, dynamic> json) {
     houseId = json['houseId'];
     displayName = json['displayName'];
     description = json['description'];
@@ -36,7 +59,7 @@ class HouseResponse extends BaseData {
     account =
     json['account'] != null ? User.fromJson(json['account']) : null;
     project =
-    json['project'] != null ? ProjectResponse.fromJson(json['project']) : null;
+    json['project'] != null ? Project.fromJson(json['project']) : null;
     info = json['info'] != null ? Info.fromJson(json['info']) : null;
     createTime = json['createTime'];
     isOwner = json['isOwner'];
@@ -68,7 +91,7 @@ class HouseResponse extends BaseData {
 
   @override
   BaseData fromJsonBase(Map<String, dynamic> json) {
-    return HouseResponse.fromJson(json);
+    return House.fromJson(json);
   }
 }
 
@@ -110,6 +133,7 @@ class Address {
 
 class Info {
   String? thumbNailUrl;
+  double? area;
   int? numKitchen;
   int? numBathroom;
   int? numToilet;
@@ -130,6 +154,7 @@ class Info {
 
   Info.fromJson(Map<String, dynamic> json) {
     thumbNailUrl = json['thumbNailUrl'];
+    area = json['area'];
     numKitchen = json['numKitchen'];
     numBathroom = json['numBathroom'];
     numToilet = json['numToilet'];
@@ -153,6 +178,7 @@ class Info {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['thumbNailUrl'] = thumbNailUrl;
+    data['area'] = area;
     data['numKitchen'] = numKitchen;
     data['numBathroom'] = numBathroom;
     data['numToilet'] = numToilet;

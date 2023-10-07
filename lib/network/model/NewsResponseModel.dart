@@ -1,14 +1,14 @@
 import 'package:cdio/network/model/UserModel.dart';
 
-class NewsResponse {
+class News {
   String? title;
   String? content;
   User? account;
   int? createTime;
 
-  NewsResponse({this.title, this.content, this.account, this.createTime});
+  News({this.title, this.content, this.account, this.createTime});
 
-  NewsResponse.fromJson(Map<String, dynamic> json) {
+  News.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     content = json['content'];
     account =

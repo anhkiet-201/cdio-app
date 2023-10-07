@@ -225,7 +225,7 @@ extension on __ViewState {
   }
 
   Widget _homeListViewItem(int index) {
-    final HouseResponse house;
+    final House house;
     house = _viewModel.houses[index];
     return GestureDetector(
       onTap: () => Navigator.maybeOf(context)
@@ -286,11 +286,11 @@ extension on __ViewState {
   }
 
   Container _projectListItem(int index) {
-    final ProjectResponse project;
+    final Project project;
     if (!_viewModel.isLoading) {
       project = _viewModel.projects[index];
     } else {
-      project = ProjectResponse(
+      project = Project(
           projectName: 'cdio cdio cdio cdio cdio cdio ',
           projectDescription: 'cdio cdio cdio cdio cdio cdio cdio cdio cdio ',
           projectStatus: 'cdio cdio cdio cdio ',

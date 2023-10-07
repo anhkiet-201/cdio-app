@@ -1,4 +1,5 @@
 import 'package:cdio/component/CustomImage.dart';
+import 'package:cdio/component/favorite_button/FavoriteButton.dart';
 import 'package:cdio/network/model/HouseReponse.dart';
 import 'package:cdio/scene/house_detail/components/house_images_view/house_images.view.dart';
 import 'package:cdio/scene/house_detail/components/same_project_view/same_project_view.dart';
@@ -10,7 +11,7 @@ import 'package:iconsax/iconsax.dart';
 class HouseDetail extends StatefulWidget {
   const HouseDetail(this.house, {super.key});
 
-  final HouseResponse house;
+  final House house;
 
   @override
   State<HouseDetail> createState() => _HouseDetailState();
@@ -21,7 +22,7 @@ class _HouseDetailState extends State<HouseDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BaseScrollView.sliver(
-        slivers: [HouseImagesView(widget.house.info?.houseImage)],
+        slivers: [HouseImagesView(widget.house)],
         body: Column(
           children: [
             if (widget.house.info?.houseImage == null)
@@ -163,12 +164,23 @@ extension on _HouseDetailState {
 
   Widget _prices() {
     final type = widget.house.info?.houseTypeDetailHouseTypes ?? [];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        for (final t in type)
-          Text('Giá ${t.typeName! == 'Rent' ? 'thuê' : 'bán'}: ${t.price} vnđ')
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (final t in type)
+              Text('Giá ${t.typeName! == 'Rent' ? 'thuê' : 'bán'}: ${t.price} vnđ')
+          ],
+        ),
+        const Spacer(),
+        SizedBox(
+          height: 40,
+          width: 40,
+          child: Center(child: FavoriteButton(widget.house.houseId ?? -1)),
+        )
       ],
     );
   }

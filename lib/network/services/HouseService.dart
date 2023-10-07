@@ -7,7 +7,7 @@ class HouseService {
   static HouseService shared = HouseService();
   final _api = BaseApi.shared;
 
-  Future<List<HouseResponse>> getHouseSameProject({required int id, int size = 10, int index = 0}) async {
+  Future<List<House>> getHouseSameProject({required int id, int size = 10, int index = 0}) async {
     final response = await _api.get(
         path: '/house/getSameProject',
         params: {
@@ -18,6 +18,16 @@ class HouseService {
         }
     );
     final result = PageableResponseModel.fromJson(response.data);
-    return result.items?.map((e) => HouseResponse.fromJson(e)).toList() ?? [];
+    return result.items?.map((e) => House.fromJson(e)).toList() ?? [];
+  }
+
+  Future<HouseResponseModel?> getHouseById({required int id}) async {
+    final response = await _api.get(
+        path: '/house/getById',
+        params: {
+          "id": id,
+        }
+    );
+    return HouseResponseModel.fromJson(response.data);
   }
 }

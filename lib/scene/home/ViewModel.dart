@@ -22,9 +22,9 @@ class _ViewModel with ChangeNotifier {
   bool get isError => _isError;
   String? error;
 
-  var houses = <HouseResponse>[];
-  var projects = <ProjectResponse>[];
-  var news = <NewsResponse>[];
+  var houses = <House>[];
+  var projects = <Project>[];
+  var news = <News>[];
 
   Future<void> fetch() async {
     isLoading = true;

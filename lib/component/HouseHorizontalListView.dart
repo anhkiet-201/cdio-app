@@ -13,7 +13,7 @@ class HouseHorizontalListView extends StatelessWidget {
     required this.isLoading,
     this.onMoreClick
   });
-  final List<HouseResponse> house;
+  final List<House> house;
   final String title;
   final bool isLoading;
   final Function? onMoreClick;
@@ -73,7 +73,7 @@ extension on HouseHorizontalListView {
   }
 
   Widget _listItem(int index, BuildContext context) {
-    final HouseResponse house = this.house[index];
+    final House house = this.house[index];
     return GestureDetector(
       onTap: () => Navigator.maybeOf(context)
           ?.push(MaterialPageRoute(builder: (_) => HouseDetail(house))),

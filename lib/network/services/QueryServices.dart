@@ -8,7 +8,7 @@ class QueryService {
   static QueryService shared = QueryService();
   final _api = BaseApi.shared;
 
-  Future<Pageable<HouseResponse>> search({
+  Future<Pageable<House>> search({
     required String key,
     String? province,
     String? district,
@@ -33,7 +33,7 @@ class QueryService {
           "index": index
         }
     );
-    return PageableResponseModel.fromJson(response.data).to(type: HouseResponse.new);
+    return PageableResponseModel.fromJson(response.data).to(type: House.new);
   }
 
   Future<List<Address>> getAllAddress() async {

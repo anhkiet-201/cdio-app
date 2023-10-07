@@ -18,7 +18,7 @@ class _ViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  var houses = <HouseResponse>[];
+  var houses = <House>[];
 
   _fetch() async {
     if(id == null) return;

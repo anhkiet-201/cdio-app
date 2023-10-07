@@ -17,7 +17,7 @@ class _ViewModel with ChangeNotifier {
   int _currentPage = 0;
 
   var isOptionsLoaded = false;
-  List<HouseResponse> house = [];
+  List<House> house = [];
   var options = <FilterOption>[];
   var hasNext = false;
   var key = '';

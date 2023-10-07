@@ -1,4 +1,4 @@
-class ProjectResponse {
+class Project {
   int? projectId;
   String? projectName;
   String? projectStatus;
@@ -7,7 +7,7 @@ class ProjectResponse {
   String? projectThumbNailUrl;
   String? projectDescription;
 
-  ProjectResponse(
+  Project(
       {this.projectId,
         this.projectName,
         this.projectStatus,
@@ -16,7 +16,7 @@ class ProjectResponse {
         this.projectThumbNailUrl,
         this.projectDescription});
 
-  ProjectResponse.fromJson(Map<String, dynamic> json) {
+  Project.fromJson(Map<String, dynamic> json) {
     projectId = json['projectId'];
     projectName = json['projectName'];
     projectStatus = json['projectStatus'];

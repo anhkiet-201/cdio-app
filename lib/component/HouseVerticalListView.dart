@@ -1,5 +1,7 @@
 import 'package:cdio/component/CustomImage.dart';
+import 'package:cdio/component/favorite_button/FavoriteButton.dart';
 import 'package:cdio/network/model/HouseReponse.dart';
+import 'package:cdio/scene/house_detail/HouseDetail.dart';
 import 'package:cdio/utils/utils.dart';
 import 'package:cdio/widget/scrollview/scrollview.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,7 @@ import 'package:skeletons/skeletons.dart';
 
 class HouseVerticalListView extends StatelessWidget {
   const HouseVerticalListView(this.house, {super.key, required this.isLoading, required this.hasNext, required this.onLoadMore});
-  final List<HouseResponse> house;
+  final List<House> house;
   final bool isLoading;
   final bool hasNext;
   final Function() onLoadMore;
@@ -28,53 +30,75 @@ class HouseVerticalListView extends StatelessWidget {
 
   Widget _item(BuildContext context, int index) {
     final item = house[index];
-    return SizedBox(
-      height: 100,
-      width: double.infinity,
-      child: Row(
-        children: [
-          CDImage(
-            url: item.info?.thumbNailUrl,
-            width: 100,
-            height: 100,
-            radius: 0,
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${item.displayName}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  const Spacer(),
-                  const Row(
-                    children: [Text('1224 m2'), Spacer(), Text('15 ty')],
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                      timeAgo(item.createTime),
-                    style: const TextStyle(
-                      color: Colors.grey
-                    ),
-                  )
-                ],
-              ),
+    return GestureDetector(
+      child: SizedBox(
+        height: 100,
+        width: double.infinity,
+        child: Row(
+          children: [
+            CDImage(
+              url: item.info?.thumbNailUrl,
+              width: 100,
+              height: 100,
+              radius: 0,
             ),
-          )
-        ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${item.displayName}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const Spacer(),
+                    Row(
+                      children: [
+                        Text('${item.info?.area} m2'),
+                        const Spacer(),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if(item.info?.houseTypeDetailHouseTypes != null)
+                              for(final type in item.info!.houseTypeDetailHouseTypes!)
+                                Text('Giá ${type.typeName == 'Rent' ? 'thuê' : 'bán'}: ${type.price} Vnđ', style: const TextStyle( fontSize: 12),)
+                          ],
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          timeAgo(item.createTime),
+                          style: const TextStyle(
+                              color: Colors.grey
+                          ),
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: FavoriteButton(item.houseId ?? -1),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
+      onTap: () {
+        Navigator.maybeOf(context)?.push(
+          MaterialPageRoute(builder: (_) => HouseDetail(item))
+        );
+      },
     );
   }
 }

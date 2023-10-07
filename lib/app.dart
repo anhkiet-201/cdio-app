@@ -10,16 +10,16 @@ class AppDelegate extends StatelessWidget {
   final App app;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'CDIO App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
-        useMaterial3: true,
-      ),
-      home: ChangeNotifierProvider.value(
-        value: app,
-        child: PresentWidget(
+    return ChangeNotifierProvider.value(
+      value: app..appContext = context,
+      child: MaterialApp(
+        title: 'CDIO App',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
+          useMaterial3: true,
+        ),
+        home: PresentWidget(
             controller: App.presentController,
             dismissDragLeftDrawer: true,
             dismissDragRightDrawer: true,
@@ -31,6 +31,7 @@ class AppDelegate extends StatelessWidget {
 }
 
 class App with ChangeNotifier {
+  BuildContext? appContext;
   /// Constructor
   App(User? initUser) {
     _user = initUser;

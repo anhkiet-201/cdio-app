@@ -1,3 +1,4 @@
+
 import 'package:cdio/network/model/NewsResponseModel.dart';
 import 'package:cdio/network/model/ProjectRresponseModel.dart';
 
@@ -6,9 +7,9 @@ import 'HouseReponse.dart';
 class HomeResponse {
   bool? status;
   String? message;
-  List<HouseResponse>? houseNewest;
-  List<ProjectResponse>? projectNewest;
-  List<NewsResponse>? newsNewest;
+  List<House>? houseNewest;
+  List<Project>? projectNewest;
+  List<News>? newsNewest;
 
   HomeResponse(
       {this.status,
@@ -21,21 +22,21 @@ class HomeResponse {
     status = json['status'];
     message = json['message'];
     if (json['houseNewest'] != null) {
-      houseNewest = <HouseResponse>[];
+      houseNewest = <House>[];
       json['houseNewest'].forEach((v) {
-        houseNewest!.add(HouseResponse.fromJson(v));
+        houseNewest!.add(House.fromJson(v));
       });
     }
     if (json['projectNewest'] != null) {
-      projectNewest = <ProjectResponse>[];
+      projectNewest = <Project>[];
       json['projectNewest'].forEach((v) {
-        projectNewest!.add(ProjectResponse.fromJson(v));
+        projectNewest!.add(Project.fromJson(v));
       });
     }
     if (json['newsNewest'] != null) {
-      newsNewest = <NewsResponse>[];
+      newsNewest = <News>[];
       json['newsNewest'].forEach((v) {
-        newsNewest!.add(NewsResponse.fromJson(v));
+        newsNewest!.add(News.fromJson(v));
       });
     }
   }
