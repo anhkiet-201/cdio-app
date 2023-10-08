@@ -4,6 +4,7 @@ import 'package:cdio/network/model/NewsResponseModel.dart';
 import 'package:cdio/network/model/ProjectRresponseModel.dart';
 import 'package:cdio/network/services/HomeService.dart';
 import 'package:cdio/scene/house_detail/HouseDetail.dart';
+import 'package:cdio/scene/project/ProjectView.dart';
 import 'package:cdio/scene/search_result/SearchResult.dart';
 import 'package:cdio/widget/scrollview/scrollview.dart';
 import 'package:flutter/foundation.dart';
@@ -155,7 +156,7 @@ extension on __ViewState {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          title('Home newsest'),
+          title('Căn hộ mới nhất'),
           const SizedBox(
             height: 10,
           ),
@@ -165,7 +166,7 @@ extension on __ViewState {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 isLoading: _viewModel.isLoading,
                 itemCount: _viewModel.houses.length,
-                spacing: 50,
+                spacing: 10,
                 itemBuilder: (_, index) {
                   return _homeListViewItem(index);
                 },
@@ -202,20 +203,40 @@ extension on __ViewState {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          title('Prject newsest'),
+          title('Dự án mới nhất'),
           const SizedBox(
             height: 10,
           ),
           SizedBox(
             height: 300,
-            child: ListView.builder(
+            child: BaseScrollView.horizontal(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              scrollDirection: Axis.horizontal,
-              itemCount: _viewModel.isLoading
-                  ? _calculatedItemLoadingNum(275)
-                  : _viewModel.projects.length,
+              itemCount: _viewModel.projects.length,
+              isLoading: _viewModel.isLoading,
+              spacing: 10,
               itemBuilder: (_, index) {
                 return _projectListItem(index);
+              },
+              loadingBuilder: (_, __) {
+                return SizedBox(
+                  width: 275,
+                  child: Column(
+                    children: [
+                      SkeletonAvatar(
+                        style: SkeletonAvatarStyle(
+                            width: 260,
+                            height: 175,
+                            borderRadius: BorderRadius.circular(15)),
+                      ),
+                      SkeletonParagraph(
+                        style: const SkeletonParagraphStyle(
+                            lineStyle: SkeletonLineStyle(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(15)))),
+                      )
+                    ],
+                  ),
+                );
               },
             ),
           )
@@ -285,67 +306,65 @@ extension on __ViewState {
     );
   }
 
-  Container _projectListItem(int index) {
-    final Project project;
-    if (!_viewModel.isLoading) {
-      project = _viewModel.projects[index];
-    } else {
-      project = Project(
-          projectName: 'cdio cdio cdio cdio cdio cdio ',
-          projectDescription: 'cdio cdio cdio cdio cdio cdio cdio cdio cdio ',
-          projectStatus: 'cdio cdio cdio cdio ',
-          projectThumbNailUrl:
-              'https://file4.batdongsan.com.vn/2023/04/17/20230417230202-3438_wm.jpg');
-    }
-    return Container(
-      margin: EdgeInsets.only(right: index < 9 ? 10 : 0),
-      width: MediaQuery.of(context).size.width * 0.6,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(25)),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Image.network(
-              project.projectThumbNailUrl ??
-                  'https://file4.batdongsan.com.vn/2023/04/17/20230417230202-3438_wm.jpg',
-              fit: BoxFit.cover,
-              height: 300,
-            ),
-            Container(
-              height: 90,
-              width: double.infinity,
-              padding: const EdgeInsets.all(8),
-              color: Colors.white.withOpacity(0.9),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    project.projectName ?? '',
-                    style: const TextStyle(color: Colors.black),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    project.projectDescription ?? '',
-                    style: const TextStyle(color: Colors.black87, fontSize: 10),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                    child: Text(
-                      'cdio',
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
+  Widget _projectListItem(int index) {
+    final Project project = _viewModel.projects[index];
+    return GestureDetector(
+      child: SizedBox(
+        width: 250,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(25)),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Image.network(
+                project.projectThumbNailUrl ??
+                    'https://file4.batdongsan.com.vn/2023/04/17/20230417230202-3438_wm.jpg',
+                fit: BoxFit.cover,
+                height: 300,
               ),
-            )
-          ],
+              Container(
+                height: 90,
+                width: double.infinity,
+                padding: const EdgeInsets.all(8),
+                color: Colors.white.withOpacity(0.9),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      project.projectName ?? '',
+                      style: const TextStyle(color: Colors.black),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      project.projectDescription ?? '',
+                      style: const TextStyle(color: Colors.black87, fontSize: 10),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Container(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                      child: Text(
+                        (project.projectStatus ?? '') == 'DaHoanThanh'
+                            ? 'Đã bàn giao'
+                            : 'Đang thi công',
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
+      onTap: () {
+        Navigator.maybeOf(context)?.push(
+          MaterialPageRoute(builder: (_) => ProjectView(project))
+        );
+      },
     );
   }
 }
