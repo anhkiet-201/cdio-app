@@ -38,7 +38,7 @@ class _NavViewState extends State<NavView> {
   final pages = const [
     HomeView(),
     FavoriteView(),
-    CreatePostView(),
+    SizedBox(),
     ProfileView()
   ];
 
@@ -85,7 +85,9 @@ extension on _NavViewState {
       case 1:
         break;
       case 2:
-        break;
+        if (context.appState.user == null) break;
+        present(view: const CreatePostView());
+        return;
       case 3:
         break;
     }

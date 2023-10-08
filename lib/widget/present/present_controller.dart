@@ -68,6 +68,7 @@ class PresentController extends ChangeNotifier {
       for (var element in _callbacks) {
         element?.call();
       }
+      _content = null;
     }
   }
 
@@ -99,10 +100,6 @@ class PresentController extends ChangeNotifier {
 
   void onDismissPrevented(Function() callback) {
     _onDismissPreventedCallback = callback;
-  }
-
-  void onPresentHide() {
-
   }
 }
 
