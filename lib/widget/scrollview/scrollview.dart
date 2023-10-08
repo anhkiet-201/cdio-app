@@ -1,5 +1,7 @@
 import 'package:cdio/utils/extensions/object.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 typedef BaseScrollViewItemType = Widget? Function(
@@ -22,6 +24,7 @@ class BaseScrollView extends StatefulWidget {
       this.onLoadMore,
       this.spacing = 8,
       this.shrinkWrap = false,
+      this.isEmpty = false,
       this.padding}) {
     assert(isLoading == false || loadingBuilder != null);
     _scrollDirection = Axis.vertical;
@@ -37,6 +40,7 @@ class BaseScrollView extends StatefulWidget {
       this.endReachedThreshold = 200,
       this.spacing = 8,
       this.shrinkWrap = false,
+      this.isEmpty = false,
       this.padding}) {
     assert(isLoading == false || loadingBuilder != null);
     itemCount = 1;
@@ -58,6 +62,7 @@ class BaseScrollView extends StatefulWidget {
       this.spacing = 8,
       this.shrinkWrap = false,
       this.onLoadMore,
+      this.isEmpty = false,
       this.padding}) {
     assert(isLoading == false || loadingBuilder != null);
     onRefresh = null;
@@ -75,6 +80,7 @@ class BaseScrollView extends StatefulWidget {
       this.endReachedThreshold = 200,
       this.spacing = 8,
       this.shrinkWrap = false,
+      this.isEmpty = false,
       this.padding}) {
     assert(isLoading == false || loadingBuilder != null);
     itemCount = 1;
@@ -97,6 +103,7 @@ class BaseScrollView extends StatefulWidget {
   late final Axis _scrollDirection;
   late final List<Widget> slivers;
   late final bool shrinkWrap;
+  late final bool isEmpty;
 
   @override
   State<BaseScrollView> createState() => _BaseScrollViewState();
@@ -163,7 +170,6 @@ class _BaseScrollViewState extends State<BaseScrollView> {
                     double refreshTriggerPullDistance,
                     double refreshIndicatorExtent,
                   ) {
-                    // print();
                     return const Center(
                       child: AspectRatio(
                         aspectRatio: 1,
@@ -188,7 +194,7 @@ class _BaseScrollViewState extends State<BaseScrollView> {
                   right: widget.padding!.right,
                   bottom: widget.padding!.bottom)
               : EdgeInsets.zero,
-          sliver: SliverList(
+          sliver: widget.isEmpty ? _empty() : SliverList(
             delegate: SliverChildBuilderDelegate(
                 (context, index) => AnimatedSwitcher(
                       duration: const Duration(milliseconds: 500),
@@ -229,6 +235,30 @@ class _BaseScrollViewState extends State<BaseScrollView> {
             ),
           )
       ],
+    );
+  }
+
+  Widget _empty() {
+    return SliverToBoxAdapter(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: const Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.hourglass_empty, size: 40,),
+              Text(
+                'Empty',
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.italic
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

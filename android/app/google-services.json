@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "885626287271",
+    "project_id": "vs-videosocial",
+    "storage_bucket": "vs-videosocial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:885626287271:android:d63ac3512afa9618635782",
+        "android_client_info": {
+          "package_name": "com.ak.vs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "885626287271-m4v7dm1582iklrj6r06a7op6vevffahr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnryQr7W30IfOpJWXhUM70jdESEzo0GZ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "885626287271-m4v7dm1582iklrj6r06a7op6vevffahr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:885626287271:android:4eaeb6f216a7f99f635782",
+        "android_client_info": {
+          "package_name": "com.example.cdio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "885626287271-m4v7dm1582iklrj6r06a7op6vevffahr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnryQr7W30IfOpJWXhUM70jdESEzo0GZ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "885626287271-m4v7dm1582iklrj6r06a7op6vevffahr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -27,6 +27,7 @@ class HouseVerticalListView extends StatelessWidget {
       loadingBuilder: (_, __) => const HouseVerticalSkeleton(),
       hasNext: hasNext,
       onRefresh: onRefresh,
+      isEmpty: house.isEmpty && !isLoading,
     );
   }
 
@@ -101,6 +102,18 @@ class HouseVerticalListView extends StatelessWidget {
           MaterialPageRoute(builder: (_) => HouseDetail(item))
         );
       },
+    );
+  }
+
+  Widget _empty() {
+    return Center(
+      child: Column(
+        children: [
+          Text(
+            'Trống'
+          )
+        ],
+      ),
     );
   }
 }
