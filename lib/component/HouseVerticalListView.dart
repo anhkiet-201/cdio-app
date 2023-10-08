@@ -8,11 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:skeletons/skeletons.dart';
 
 class HouseVerticalListView extends StatelessWidget {
-  const HouseVerticalListView(this.house, {super.key, required this.isLoading, required this.hasNext, required this.onLoadMore});
+  const HouseVerticalListView(this.house, {super.key, required this.isLoading, required this.hasNext, required this.onLoadMore, this.onRefresh});
   final List<House> house;
   final bool isLoading;
   final bool hasNext;
   final Function() onLoadMore;
+  final Future<void> Function()? onRefresh;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class HouseVerticalListView extends StatelessWidget {
       onLoadMore: onLoadMore,
       loadingBuilder: (_, __) => const HouseVerticalSkeleton(),
       hasNext: hasNext,
+      onRefresh: onRefresh,
     );
   }
 

@@ -23,7 +23,7 @@ class _ViewModel with ChangeNotifier {
   _fetch() async {
     if(id == null) return;
     isLoading = true;
-    _houseService.getHouseSameProject(id: 10).then((value) {
+    _houseService.getHouseSameProject(id: id ?? -1).then((value) {
       houses = value;
     }).catchError(() {
       context.showSnackBar(SnackBarType.error);

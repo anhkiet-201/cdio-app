@@ -29,7 +29,7 @@ class _View extends StatefulWidget {
   State<_View> createState() => _ViewState();
 }
 
-class _ViewState extends State<_View> {
+class _ViewState extends State<_View> with AutomaticKeepAliveClientMixin {
   late _ViewModel _viewModel;
 
   @override
@@ -68,6 +68,10 @@ class _ViewState extends State<_View> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class _ViewModel with ChangeNotifier {
