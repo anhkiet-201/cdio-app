@@ -502,7 +502,6 @@ extension on __ViewState {
       ), enableDrag: false, isDismissible: false);
     } else {
       Navigator.maybeOf(context)?.pop();
-      dispose();
     }
   }
 }

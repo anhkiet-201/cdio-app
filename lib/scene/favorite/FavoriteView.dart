@@ -1,6 +1,8 @@
 import 'package:cdio/component/HouseVerticalListView.dart';
 import 'package:cdio/network/model/HouseReponse.dart';
 import 'package:cdio/network/services/UserService.dart';
+import 'package:cdio/utils/extensions/context.dart';
+import 'package:cdio/utils/extensions/object.dart';
 import 'package:cdio/utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

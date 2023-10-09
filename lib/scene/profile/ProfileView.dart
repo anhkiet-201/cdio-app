@@ -90,9 +90,9 @@ extension on _ProfileViewState {
         LocalStorageService.shared.dropValue(key: LocalStorageKey.user),
       ]
     ).then((value) async {
-      context.appState.user = null;
       LocalStorageService.jwt = null;
       context.showCustomSnackBar('Đã đăng xuất!');
+      context.appState.user = null;
     });
   }
 }

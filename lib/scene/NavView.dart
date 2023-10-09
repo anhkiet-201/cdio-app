@@ -18,21 +18,11 @@ class NavView extends StatefulWidget {
 
 class _NavViewState extends State<NavView> {
   var _selectedTab = 0;
-  var _previousSelected = 0;
-  late final PageController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = PageController(keepPage: true);
     context.appState.addListener(_onAppStateChange);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-    context.appState.dispose();
   }
 
   final pages = const [
@@ -45,11 +35,7 @@ class _NavViewState extends State<NavView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: _controller,
-        physics: const NeverScrollableScrollPhysics(),
-        children: pages,
-      ),
+      body: pages[_selectedTab],
       bottomNavigationBar: bottomNavigation(),
     );
   }
@@ -75,45 +61,21 @@ extension on _NavViewState {
 
 extension on _NavViewState {
   _onTapNav(int index) {
-    _selectedTab = index;
-    switch (index) {
-      case 0:
-        _controller.animateToPage(0,
-            duration: const Duration(milliseconds: 300), curve: Curves.linear);
-        setState(() {});
-        return;
-      case 1:
-        break;
-      case 2:
-        if (context.appState.user == null) break;
-        present(view: const CreatePostView());
-        return;
-      case 3:
-        break;
-    }
-    if (context.appState.user == null) {
+    if(index > 0 && context.appState.user == null) {
       present(
           view: Container(
             color: Colors.white,
             child: const LoginView(),
-          ),
-          onPresentHide: () {
-            if (context.appState.user != null) {
-              _controller.animateToPage(_selectedTab,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.linear);
-              setState(() {
-                _previousSelected = _selectedTab;
-              });
-            }
-          });
-    } else {
-      _controller.animateToPage(_selectedTab,
-          duration: const Duration(milliseconds: 300), curve: Curves.linear);
-      setState(() {
-        _previousSelected = _selectedTab;
-      });
+          ));
+      return;
     }
+    if(index == 2) {
+      present(view: const CreatePostView());
+      return;
+    }
+    setState(() {
+      _selectedTab = index;
+    });
   }
 
   _onAppStateChange() {
@@ -122,9 +84,7 @@ extension on _NavViewState {
 
   _onLogout() {
     setState(() {
-      _previousSelected = 0;
       _selectedTab = 0;
     });
-    _controller.jumpToPage(0);
   }
 }
