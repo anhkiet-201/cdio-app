@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cdio/network/model/HouseReponse.dart';
 import 'package:cdio/network/model/PageableResponseModel.dart';
 
@@ -38,6 +40,7 @@ class HouseService {
       String? street,
       String? addressDescription,
       String? thumbNailUrl,
+      double? area,
       int? numKitchen,
       int? numBathroom,
       int? numToilet,
@@ -65,6 +68,7 @@ class HouseService {
       "province": province,
       "district": district,
       "wards": wards,
+      "area": area,
       "street": street,
       "addressDescription": addressDescription,
       "thumbNailUrl": thumbNailUrl,

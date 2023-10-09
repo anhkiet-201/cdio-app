@@ -56,6 +56,7 @@ class __ViewState extends State<_View> {
   final _numBedRoom = TextEditingController();
   final _rentPrice = TextEditingController();
   final _sellPrice = TextEditingController();
+  final _area = TextEditingController();
   List<XFile> _houseImages = [];
   XFile? _houseThumbnail;
   XFile? _projectThumbnail;
@@ -144,6 +145,11 @@ class __ViewState extends State<_View> {
                         BaseTextField(
                           hint: 'Mô tả ngôi nhà',
                           controller: _description
+                        ),
+                        BaseTextField(
+                            hint: 'Diện tích (*m2)',
+                            controller: _area,
+                          inputType: TextInputType.number
                         ),
                         _title('Thông tin giá'),
                         const Text(
@@ -436,10 +442,15 @@ extension on __ViewState {
   }
 
   _onSubmit() {
+    if(_displayName.text.isEmpty) {
+      context.showCustomSnackBar('Tên hiển thị không được để trống');
+      return;
+    }
     if(_formKey.currentState?.validate() ?? false) {
       context.read<_ViewModel>()
           .post(
           displayName: _displayName.text,
+        description: _description.text,
         projectId: _projectSelected?.projectId,
         projectName: _projectName.text,
         projectStatus: _projectStatus,
@@ -448,6 +459,7 @@ extension on __ViewState {
         projectDescription: _projectDescription.text,
         province: _province.text,
         district: _district.text,
+        area: double.tryParse(_area.text)?.floorToDouble(),
         wards: _wards.text,
         street: _street.text,
         thumbNailFile: _houseThumbnail,
@@ -460,6 +472,9 @@ extension on __ViewState {
         rentPrice: double.tryParse(_rentPrice.text),
         sellPrice: double.tryParse(_sellPrice.text)
       );
+    }
+    else {
+      context.showCustomSnackBar('Thiếu thông tin. Vui lòng kiểm tra lại');
     }
   }
 
@@ -487,6 +502,7 @@ extension on __ViewState {
       ), enableDrag: false, isDismissible: false);
     } else {
       Navigator.maybeOf(context)?.pop();
+      dispose();
     }
   }
 }

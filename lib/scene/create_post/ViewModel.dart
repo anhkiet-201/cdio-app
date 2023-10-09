@@ -34,6 +34,7 @@ class _ViewModel with ChangeNotifier {
     int? numToilet,
     int? numLivingRoom,
     int? numBedRoom,
+    double? area,
     List<XFile>? imagesFile,
     double? rentPrice,
     double? sellPrice}) async {
@@ -72,6 +73,7 @@ class _ViewModel with ChangeNotifier {
       numLivingRoom: numLivingRoom,
       numToilet: numToilet,
       images: images,
+      area: area,
       sellPrice: sellPrice,
       rentPrice: rentPrice
     ).then((value){
