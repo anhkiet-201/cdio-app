@@ -82,4 +82,33 @@ class HouseService {
     });
     return HouseResponseModel.fromJson(response.data);
   }
+
+  Future<Pageable<House>> getAll(
+      {bool sortByDesc = true, int size = 10, int index = 0}) async {
+    final response = await _api.get(
+        path: '/house/getAll',
+        params: {"enableSort": sortByDesc, "size": size, "index": index});
+    return PageableResponseModel.fromJson(response.data).to(type: House.new);
+  }
+
+  Future<Pageable<House>> getPersonalHouse({
+    bool sortByDesc = true,
+    int size = 10,
+    int index = 0
+  }) async {
+    final response = await _api.get(
+        path: '/house/getPersonalPost',
+        params: {
+          "size": size,
+          "index": index,
+          "enableSort": sortByDesc,
+        }
+    );
+    return PageableResponseModel.fromJson(response.data).to(type: House.new);
+  }
+
+  Future<HouseResponseModel?> deleteHouse({required int id}) async {
+    final response = await _api.delete(path: '/house/deleteById', body: id);
+    return HouseResponseModel.fromJson(response.data);
+  }
 }

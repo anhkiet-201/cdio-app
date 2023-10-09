@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 
 bool isValidEmail(String email) {
@@ -15,3 +16,5 @@ String timeAgo(int? time) {
   return Jiffy.parseFromDateTime(DateTime.fromMillisecondsSinceEpoch(time ?? 0)).toLocal()
       .fromNow();
 }
+
+String priceFormat(double? price) => NumberFormat.currency(locale: 'vi').format(price ?? 0);

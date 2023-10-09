@@ -1,11 +1,13 @@
 import 'package:cdio/component/CustomButton.dart';
 import 'package:cdio/component/CustomImage.dart';
 import 'package:cdio/network/model/UserModel.dart';
+import 'package:cdio/scene/post_manager/PostManager.dart';
 import 'package:cdio/utils/LocalStorageService.dart';
 import 'package:cdio/utils/extensions/context.dart';
 import 'package:cdio/utils/snack_bar.dart';
 import 'package:cdio/widget/scrollview/scrollview.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 
 import '../../app.dart';
@@ -32,7 +34,16 @@ class _ProfileViewState extends State<ProfileView> {
         ),
         child: Column(
           children: [
+            const SizedBox(height: 10,),
             _profile(),
+            const SizedBox(height: 10,),
+            _button(icon: Iconsax.note_1, label: 'Bài đăng', action: (){
+              Navigator.maybeOf(context)?.push(
+                MaterialPageRoute(builder: (_) => const PostManager(type: ManagerType.personal,))
+              );
+            }),
+            if((context.appState.user?.role ?? '') == 'admin')
+              _button(icon: Iconsax.note_1, label: 'Quản lý admin', action: (){}),
             const SizedBox(height: 10,),
             CustomButton(text: 'Logout', onClick: () {
               _logout();
@@ -41,6 +52,37 @@ class _ProfileViewState extends State<ProfileView> {
         ),
       ),
     );
+  }
+
+  Ink _button({
+    required IconData icon,
+    required String label,
+    required Function() action
+}) {
+    return Ink(
+            child: InkWell(
+              borderRadius: BorderRadius.circular(10),
+              onTap: action,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Icon(icon),
+                    const SizedBox(width: 10,),
+                    Text(
+                        label,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18
+                      ),
+                    ),
+                    const Spacer(),
+                    const Icon(Iconsax.arrow_circle_right)
+                  ],
+                ),
+              ),
+            ),
+          );
   }
 
   @override
@@ -75,7 +117,7 @@ extension on _ProfileViewState {
               ),
               const Text('Xem trang cá nhân')
             ],
-          )
+          ),
         ],
       ),
     );
