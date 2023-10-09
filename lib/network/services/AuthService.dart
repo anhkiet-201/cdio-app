@@ -33,7 +33,7 @@ class AuthService {
   Future<ResetPasswordResponseModel> getTokenResetPassword({required String email}) async {
     final response = await _api.post(
         path: '/getResetPasswordToken',
-        rawBody: 'igg.anhkiet1@gmail.com'
+        rawBody: email
     );
     return ResetPasswordResponseModel.fromJson(response.data);
   }
