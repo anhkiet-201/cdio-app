@@ -147,6 +147,7 @@ class _ViewModel with ChangeNotifier {
   
   List<Project> projects = [];
   bool hasNext = false;
+  bool loaded = false;
 
   Future<void> fetch({
     bool sortByDesc = true,
@@ -165,6 +166,7 @@ class _ViewModel with ChangeNotifier {
       }
       projects.addAll(value.items ?? []);
       hasNext = value.hasNextPage ?? false;
+      loaded = true;
     }).catchError(() {
       context.showSnackBar(SnackBarType.error);
     }).whenComplete(() {
@@ -174,6 +176,7 @@ class _ViewModel with ChangeNotifier {
 
   Future<void> refresh() async {
     _currentPage = 0;
+    loaded = false;
     await fetch();
   }
 
