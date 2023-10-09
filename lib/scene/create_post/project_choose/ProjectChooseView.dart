@@ -8,28 +8,25 @@ import 'package:provider/provider.dart';
 import 'package:skeletons/skeletons.dart';
 
 class ProjectChoose extends StatelessWidget {
-  const ProjectChoose({super.key, required this.picked});
-  final Function(Project?) picked;
+  const ProjectChoose({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: _ViewModel(context)..fetch(),
-      child: _View(picked),
+      child: const _View(),
     );
   }
 }
 
 class _View extends StatefulWidget {
-  const _View(this.picked, {super.key});
-  final Function(Project?) picked;
+  const _View({super.key});
 
   @override
   State<_View> createState() => _ViewState();
 }
 
 class _ViewState extends State<_View> {
-  Project? _selectedProject;
 
   @override
   Widget build(BuildContext context) {
@@ -46,19 +43,11 @@ class _ViewState extends State<_View> {
         return GestureDetector(
             child: _listItem(project),
           onTap: () {
-              _selectedProject = viewModel.projects[index];
-              Navigator.maybeOf(context)?.pop();
+              Navigator.maybeOf(context)?.pop(viewModel.projects[index]);
           },
         );
       },
     );
-  }
-
-
-  @override
-  void dispose() {
-    super.dispose();
-    widget.picked(_selectedProject);
   }
 
   SizedBox _listItem(Project project) {

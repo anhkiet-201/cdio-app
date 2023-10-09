@@ -10,9 +10,11 @@ class CustomDropDown extends StatelessWidget {
     this.onChange,
     this.onSave,
     this.validator,
-    this.label
+    this.label,
+    this.value
   });
   final List<String> items;
+  final String? value;
   final String? Function(String?)? validator;
   final String? hint;
   final Function(String?)? onChange;
@@ -23,6 +25,7 @@ class CustomDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField2(
       isExpanded: true,
+      value: value,
       items: items
           .map((item) => DropdownMenuItem(
         value: item,
