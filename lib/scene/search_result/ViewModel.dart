@@ -74,7 +74,7 @@ class _ViewModel with ChangeNotifier {
   }
 
   Future<void> search({
-    bool sortByDesc = true,
+    bool sortByDesc = false,
     int size = 10,
     bool clear = true
   }) async {
