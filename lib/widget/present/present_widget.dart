@@ -95,7 +95,7 @@ class _PresentWidgetAnimationState extends State<PresentWidget>
 
   @override
   void didUpdateWidget(PresentWidget oldWidget) {
-    oldWidget.controller.hidePresent();
+    //oldWidget.controller.hidePresent();
     super.didUpdateWidget(widget);
     oldWidget.controller.removeListener(_listener);
     widget.controller.addListener(_listener);

@@ -13,11 +13,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final emulatorHost =
-  (!kIsWeb && defaultTargetPlatform == TargetPlatform.android)
-      ? '10.0.2.2'
-      : 'localhost';
-  await FirebaseStorage.instance.useStorageEmulator(emulatorHost, 9199);
   var user = await LocalStorageService.shared
       .getObject(key: LocalStorageKey.user, type: User.new);
   await LocalStorageService.initJwt();

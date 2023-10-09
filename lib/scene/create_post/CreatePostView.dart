@@ -1,14 +1,15 @@
 import 'dart:io';
 
-import 'package:cdio/app.dart';
+import 'package:cdio/component/BaseTextField.dart';
 import 'package:cdio/component/CustomDropDown.dart';
+import 'package:cdio/scene/create_post/project_choose/ProjectChooseView.dart';
 import 'package:cdio/utils/present.dart';
 import 'package:cdio/widget/scrollview/scrollview.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
 part 'ViewModel.dart';
 
 class CreatePostView extends StatelessWidget {
@@ -117,44 +118,84 @@ class __ViewState extends State<_View> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _textField(
+                        BaseTextField(
                           hint: 'Mô tả ngôi nhà'
                         ),
+                        _title('Thông tin giá'),
+                        const Text(
+                          '* Có thể để trống',
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.redAccent
+                          ),
+                        ),
+                        BaseTextField(
+                            hint: 'Giá thuê',
+                            isRequire: false,
+                            inputType: TextInputType.number
+                        ),
+                        BaseTextField(
+                            hint: 'Giá mua',
+                            isRequire: false,
+                            inputType: TextInputType.number
+                        ),
                         _title('Thông tin số phòng'),
-                        _textField(
+                        BaseTextField(
                             hint: 'Số phòng khách',
                           inputType: TextInputType.number
                         ),
-                        _textField(
+                        BaseTextField(
                             hint: 'Số phòng ngủ',
                             inputType: TextInputType.number
                         ),
-                        _textField(
+                        BaseTextField(
                             hint: 'Số phòng bếp',
                             inputType: TextInputType.number
                         ),
-                        _textField(
+                        BaseTextField(
                             hint: 'Số phòng tắm',
                             inputType: TextInputType.number
                         ),
-                        _textField(
+                        BaseTextField(
                             hint: 'Số phòng vệ sinh',
                             inputType: TextInputType.number
                         ),
                         _title('Thông tin địa chỉ'),
-                        _textField(
+                        BaseTextField(
                             hint: 'Tỉnh/Thành Phố'
                         ),
-                        _textField(
+                        BaseTextField(
                             hint: 'Quận/Huyện'
                         ),
-                        _textField(
+                        BaseTextField(
                             hint: 'Phường/Xã'
                         ),
-                        _textField(
+                        BaseTextField(
                             hint: 'Tên đường/Số nhà'
                         ),
-                        _title('Thông tin dự án'),
+                        Row(
+                          children: [
+                            _title('Thông tin dự án'),
+                            const Spacer(),
+                            IconButton(
+                                onPressed: () async {
+                                  showModalBottomSheet(
+                                    showDragHandle: true,
+                                      context: context,
+                                      builder: (_) =>ProjectChoose(
+                                        picked: (result) {
+                                          print(result?.projectName);
+                                        },
+                                      )
+                                  );
+                                },
+                                icon: const Row(children: [
+                                  Text('Chọn dự án sẵ có'),
+                                  Icon(Icons.pages_rounded)
+                                ],)
+                            )
+                          ],
+                        ),
                         const Text(
                             '* Lưu ý: thông tin dự án không thể thay đổi sau khi đăng bài',
                           style: TextStyle(
@@ -162,7 +203,7 @@ class __ViewState extends State<_View> {
                             color: Colors.redAccent
                           ),
                         ),
-                        _textField(
+                        BaseTextField(
                             hint: 'Tên dự án'
                         ),
                         CustomDropDown(
@@ -176,10 +217,10 @@ class __ViewState extends State<_View> {
 
                           },
                         ),
-                        _textField(
+                        BaseTextField(
                             hint: 'Thông tin liên hệ dự án'
                         ),
-                        _textField(
+                        BaseTextField(
                             hint: 'Mô tả dự án'
                         ),
                       ],
@@ -291,24 +332,6 @@ extension on __ViewState {
     style: const TextStyle(
         fontSize: 22, fontWeight: FontWeight.w500),
   ),);
-
-  Widget _textField({String? hint, TextEditingController? controller, int? maxLine, double? fontSize, bool useValidator = true, TextInputType? inputType}) => TextFormField(
-    maxLines: maxLine,
-    controller: controller,
-    keyboardType: inputType,
-    decoration: InputDecoration(
-      labelText: hint,
-        border: InputBorder.none, hintText: 'Nhập $hint'),
-    style: TextStyle(
-      fontSize: fontSize
-    ),
-    validator: (value) {
-      if(value == null && useValidator) {
-        return 'Không được để trống';
-      }
-      return null;
-    },
-  );
 
   Widget _bottomBar() => SizedBox(
     height: 50,

@@ -1,4 +1,6 @@
-class Project {
+import 'package:cdio/network/model/BaseData.dart';
+
+class Project extends BaseData {
   int? projectId;
   String? projectName;
   String? projectStatus;
@@ -36,5 +38,11 @@ class Project {
     data['projectThumbNailUrl'] = projectThumbNailUrl;
     data['projectDescription'] = projectDescription;
     return data;
+  }
+
+  @override
+  BaseData fromJsonBase(Map<String, dynamic> json) {
+    // TODO: implement fromJsonBase
+    return Project.fromJson(json);
   }
 }
