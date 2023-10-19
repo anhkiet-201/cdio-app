@@ -3,6 +3,10 @@ import 'package:cdio/component/favorite_button/FavoriteButton.dart';
 import 'package:cdio/network/model/HouseReponse.dart';
 import 'package:cdio/scene/house_detail/components/house_images_view/house_images.view.dart';
 import 'package:cdio/scene/house_detail/components/same_project_view/same_project_view.dart';
+import 'package:cdio/scene/login/LoginView.dart';
+import 'package:cdio/utils/extensions/context.dart';
+import 'package:cdio/utils/present.dart';
+import 'package:cdio/utils/snack_bar.dart';
 import 'package:cdio/utils/utils.dart';
 import 'package:cdio/widget/scrollview/scrollview.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +48,7 @@ class _HouseDetailState extends State<HouseDetail> {
           ],
         ),
       ),
-      bottomNavigationBar: _contactBar(),
+      bottomNavigationBar:context.appState.user != null ?  _contactBar() : null,
     );
   }
 }
@@ -172,7 +176,7 @@ extension on _HouseDetailState {
           mainAxisSize: MainAxisSize.min,
           children: [
             for (final t in type)
-              Text('Giá ${t.typeName! == 'Rent' ? 'thuê' : 'bán'}: ${t.price} vnđ')
+              Text('Giá ${t.typeName! == 'Rent' ? 'thuê' : 'bán'}: ${priceFormat(t.price)}')
           ],
         ),
         const Spacer(),

@@ -47,15 +47,15 @@ extension CDIOSnackBar on BuildContext {
           padding: EdgeInsets.only(
             top: statusBarHeight + 10,
             left: 20,
-            right: 20
+            right: 20,
+            bottom: 75
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          behavior: SnackBarBehavior.floating,
-          dismissDirection: DismissDirection.none,
-          margin: EdgeInsets.only(
-            bottom:  marginValue - statusBarHeight
-          ),
+          dismissDirection: DismissDirection.horizontal,
+          // margin: EdgeInsets.only(
+          //   bottom:  marginValue - statusBarHeight
+          // ),
         )
     );
   }
