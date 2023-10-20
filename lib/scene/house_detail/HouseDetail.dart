@@ -11,6 +11,7 @@ import 'package:cdio/utils/utils.dart';
 import 'package:cdio/widget/scrollview/scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HouseDetail extends StatefulWidget {
   const HouseDetail(this.house, {super.key});
@@ -91,7 +92,9 @@ extension on _HouseDetailState {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              launchUrl(Uri.parse('mailto: ${widget.house.account?.email}'));
+            },
             child: Text('Gửi tin qua email: ${widget.house.account?.email}'),
           ),
           if(widget.house.account?.phoneNumber != null)
